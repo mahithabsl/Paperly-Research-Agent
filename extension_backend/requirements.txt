@@ -1,0 +1,15 @@
+fastapi
+uvicorn
+langchain
+langchain-groq
+pydantic
+requests
+beautifulsoup4
+sentence-transformers
+torch
+langchain>=0.1.0
+langchain-community>=0.0.10
+langchain-core>=0.1.0
+pinecone-client>=3.0.0
+pypdf>=3.0.0
+huggingface-hub>=0.19.0 
