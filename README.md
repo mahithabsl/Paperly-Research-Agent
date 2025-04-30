@@ -5,6 +5,12 @@ This project consists of three main components:
 2. FastAPI Backend
 3. Streamlit Web Application
 
+   <img width="1015" alt="image" src="https://github.com/user-attachments/assets/37865a2d-0bc0-4ca2-ac9f-deb61850f008" />
+   <img width="1078" alt="image" src="https://github.com/user-attachments/assets/20983f77-4685-4551-8794-9fb6adefd5f4" />
+   <img width="1031" alt="image" src="https://github.com/user-attachments/assets/4d76aea0-6982-4464-8817-e253de57bf1b" />
+   <img width="1086" alt="image" src="https://github.com/user-attachments/assets/77aa0118-bedb-4edc-9ac2-b88a9dbd8fd7" />
+
+
 ## Project Structure
 
 ```
