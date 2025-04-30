@@ -5,7 +5,7 @@ from datetime import datetime
 from sentence_transformers import SentenceTransformer
 
 from pinecone import Pinecone
-from chunking import DocumentChunker
+
 
 class Indexer:
     def __init__(self, embedder: SentenceTransformer, index: Pinecone):
@@ -21,7 +21,6 @@ class Indexer:
         """
         self.embedder = embedder
         self.index = index
-        self.chunker = DocumentChunker()
 
 
 

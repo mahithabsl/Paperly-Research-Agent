@@ -5,6 +5,7 @@ from langchain.embeddings import HuggingFaceEmbeddings
 from langchain_community.vectorstores import Pinecone
 from langchain_groq import ChatGroq
 from pinecone import Pinecone
+from dotenv import load_dotenv
 import os
 import uvicorn
 from models import QueryRequest, Settings
@@ -25,24 +26,21 @@ app = FastAPI(title=title, description=description)
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://arxiv.org", "http://localhost:3000"],  # Add your frontend origins
+    allow_origins=["https://arxiv.org"],  # Add your frontend origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# LangSmith configuration
-LANGSMITH_API_KEY: str = "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"
-LANGSMITH_PROJECT: str = "pr-worthwhile-arrival-96"
-LANGSMITH_ENDPOINT: str = "https://api.smith.langchain.com"
+
 
 os.environ["LANGSMITH_TRACING"] = "true"
-os.environ["LANGSMITH_ENDPOINT"] = LANGSMITH_ENDPOINT
-os.environ["LANGSMITH_API_KEY"] = LANGSMITH_API_KEY
-os.environ["LANGSMITH_PROJECT"] = LANGSMITH_PROJECT
+os.environ["LANGSMITH_ENDPOINT"] = os.getenv("LANGSMITH_ENDPOINT")  
+os.environ["LANGSMITH_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
+os.environ["LANGSMITH_PROJECT"] = os.getenv("LANGSMITH_PROJECT")
 
 # Pinecone configuration
-PINECONE_API_KEY: str = 'pcsk_2LZnji_5FkeVeGnpuS6ENKR2SWXEKHzsThAMPfXPe1tANF63vnYyZRSQqm7m6aPUi62ovm'
+PINECONE_API_KEY: str = os.getenv("PINECONE_API_KEY")
 PINECONE_INDEX_NAME: str = 'paperly'
 
 # Initialize Pinecone
@@ -57,9 +55,8 @@ embeddings = HuggingFaceEmbeddings(
 # Initialize Pinecone vectorstore
 index = pc.Index(PINECONE_INDEX_NAME)
 indexer = Indexer(embeddings, index)
-chunker = DocumentChunker()
-retriever = PineconeRetriever(index_name=PINECONE_INDEX_NAME)
-research_agent = ResearchAgent(groq_key=os.getenv("GROQ_API_KEY"))
+chunker = DocumentChunker(embeddings)
+retriever = PineconeRetriever(embeddings=embeddings, index_name=PINECONE_INDEX_NAME)
 
 # Print all collection names
 print("Available Pinecone collections:")
@@ -109,6 +106,8 @@ async def query_endpoint(
                 
             else:
                 print("✅ File already indexed in Pinecone")
+            
+            research_agent = ResearchAgent(embeddings=embeddings, groq_key=keys.groq_key,retriever=retriever)
                 
             # Process the question using the agent
             answer = research_agent.process_question(body.query, body.url, body.title, body.level)

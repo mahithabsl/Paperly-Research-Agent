@@ -1,99 +1,123 @@
-# GENAI_003_PROJECT_18
-Gen AI  - Project 
+# Paperly - AI Research Assistant
 
-# Paperly: Research Paper Assistant  
-[![Live Demo](https://img.shields.io/badge/demo-online-green)](https://paperly.streamlit.app/) [![License: MIT](https://img.shields.io/badge/License-MIT-blue)](LICENSE) [![Python 3.8+](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)  
+This project consists of three main components:
+1. Chrome Browser Extension (UI)
+2. FastAPI Backend
+3. Streamlit Web Application
 
-A Streamlit app that leverages AI to provide **research paper summarization**, **contextual Q&A**, and **highlight extraction** in one intuitive interface.
+## Project Structure
 
----
-
-## 📖 Table of Contents
-1. [🚀 Features](#-features)  
-2. [🛠️ Technologies](#️-technologies)  
-3. [📦 Installation](#-installation)  
-4. [▶️ Usage](#️-usage)   
-5. [📜 License](#-license)  
-6. [✉️ Contact](#️-contact)  
-
----
-
-## 🚀 Features
-
-- 🔍 **PDF Upload & Summarization**  
-  Extract and distill key insights from any research paper.  
-- 💬 **Interactive Q&A**  
-  Ask detailed questions about the paper and get contextual, on-point answers.  
-
----
-
-## 🛠️ Technologies
-
-| Tool / Library     | Purpose                                   |
-| ------------------ | ----------------------------------------- |
-| **Python 3.8+**    | Core language                            |
-| **Streamlit**      | Front-end web framework                  |
-| **LangChain**      | LLM orchestration pipelines              |
-| **Gemini Pro** & **OpenAI API** | LLM backends                     |
-| **NLTK**           | Text preprocessing                       |
-| **PyPDF2**         | PDF parsing & text extraction            |
-| **python-dotenv**  | Environment variable management          |
-
----
-
-## 📦 Installation
-
-```bash
-# 1. Clone the repo
-git clone https://github.com/Ruudra1/paperly.git
-cd paperly
-
-# 2. Create & activate a venv
-python -m venv venv
-# macOS/Linux
-source venv/bin/activate
-# Windows
-venv\Scripts\activate
-
-# 3. Install dependencies
-pip install -r requirements.txt
-
-# 4. Copy & configure .env
-cp .env.example .env
-# Then edit .env with your API keys:
-# OPENAI_API_KEY=your_openai_api_key
-# GEMINI_API_KEY=your_gemini_pro_key
+```
+.
+├── extension/          # Browser extension UI
+├── extension_backend/  # FastAPI backend service
+└── web_app/           # Streamlit web interface
 ```
 
-## 📜 License
+## Setup Instructions
 
-This project is distributed under the MIT License.
-See the full text in LICENSE for details.
+### Prerequisites
+- Python 3.8+
+- Pinecone account
+- Groq API key
 
-## ▶️ Usage
+### Environment Variables
+Create a `.env` file in the `extension_backend` directory with the following variables:
 
-1. **Start the Streamlit app**  
-   ```bash
-   streamlit run app.py
-   ```
- 2. **Open your browser**
-    Navigate to:
-    ```bash
-    http://localhost:8501
-    ```
-3.  **Upload & interact**
-    
-    -   Click “Browse files” or drag-and-drop your PDF
-	-   Process it and run either summary or chat with Paperly
-    -   Use the “Ask a question” box for contextual Q&A
+```env
+PINECONE_API_KEY=your_pinecone_api_key
+LANGSMITH_API_KEY=your_langsmith_api_key
+LANGSMITH_PROJECT=your_project_name
+LANGSMITH_ENDPOINT=your_langsmith_endpoint
+```
 
+### Backend Setup (extension_backend)
 
-## **✉️ Contact**
+1. Navigate to the backend directory:
+```bash
+cd extension_backend
+```
 
-For questions, feedback, or partnership inquiries, reach out to the Paperly team:
+2. Create a virtual environment:
+```bash
+python -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+```
 
--   **Ruudra Patel** – ruudra.patel@gmail.com
-    
--   **Mahitha Borra** – bslmahitha@gmail.com
-    
--   **Pancham Desai** – panchamdesai847@gmail.com
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+4. Run the FastAPI server:
+```bash
+python main.py
+```
+
+The server will start on http://localhost:8000
+
+### Browser Extension Setup (extension)
+
+Load the extension in your browser:
+   - Open Chrome/Edge
+   - Go to Extensions (chrome://extensions/)
+   - Enable Developer Mode
+   - Click "Load unpacked"
+
+### Web Application Setup (web_app)
+
+1. Navigate to the web app directory:
+```bash
+cd web_app
+```
+
+2. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+3. Run the Streamlit app:
+```bash
+streamlit run app.py
+```
+
+The web interface will be available at http://localhost:8501
+
+## Features
+
+- **Browser Extension**:
+  - Direct integration with research paper websites
+  - Quick access to AI-powered paper analysis
+  - Context-aware querying
+
+- **FastAPI Backend**:
+  - Handles document processing and indexing
+  - Integrates with Pinecone for vector storage
+  - Provides RESTful API endpoints for queries and explanations
+
+- **Streamlit Web Interface**:
+  - User-friendly interface for paper analysis
+  - Comprehensive research paper exploration
+  - Detailed explanations and summaries
+
+## API Endpoints
+
+### POST /query
+Process a research paper query with AI assistance.
+
+### POST /explain
+Get detailed explanations for specific parts of a research paper.
+
+## Security Notes
+
+- API keys should be kept secure and never committed to version control
+- Use environment variables for sensitive information
+- Implement proper authentication in production
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request

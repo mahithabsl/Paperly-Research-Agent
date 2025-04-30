@@ -1,5 +1,4 @@
 from langchain_groq import ChatGroq
-from langchain import SerpAPIWrapper
 from langchain.agents import initialize_agent, Tool
 from langchain_community.tools.arxiv.tool import ArxivQueryRun
 from typing import Dict, Any
@@ -7,42 +6,27 @@ from typing import Dict, Any
 from retriever import PineconeRetriever
 
 class ResearchAgent:
-    def __init__(self, groq_key: str, pinecone_index_name: str = 'paperly'):
+    def __init__(self, groq_key: str, embeddings, retriever: PineconeRetriever, pinecone_index_name: str = 'paperly'):
         """
         Initialize the Research Agent with necessary API keys and configurations.
         
         Args:
+            retriever (PineconeRetriever): Retriever for Pinecone
             groq_key (str): API key for Groq
-            serpapi_key (str): API key for SerpAPI
             pinecone_index_name (str): Name of the Pinecone index to use
         """
-        self.groq_key = groq_key
         self.pinecone_index_name = pinecone_index_name
-        self.retriever = PineconeRetriever(index_name=self.pinecone_index_name)
+        self.retriever = PineconeRetriever(embeddings=embeddings, index_name=self.pinecone_index_name)
         
         # Initialize LLM
         self.llm = ChatGroq(
-            groq_api_key=self.groq_key,
+            groq_api_key=groq_key,
             model_name="llama3-8b-8192"
         )
         
-        # Initialize search tool
-        self.search = SerpAPIWrapper(serpapi_api_key=self.serpapi_key)
-        
         # Initialize arXiv tool
         self.arxiv = ArxivQueryRun()
-        
-        # Initialize agent and tools
-        
 
-    def math_solver_fn(self, expr: str) -> str:
-        """
-        Simple math solver tool (no external dependencies)
-        """
-        try:
-            return str(eval(expr, {"__builtins__": {}}))
-        except Exception as e:
-            return f"Error evaluating expression: {e}"
 
     def pinecone_retriever_fn(self, query: str, url: str) -> str:
         """
