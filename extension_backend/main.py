@@ -15,6 +15,9 @@ from agent import ResearchAgent
 from chunking import DocumentChunker
 from retriever import PineconeRetriever
 
+# Load environment variables
+load_dotenv()
+
 # Create FastAPI app instance
 title = "FastAPI LLM Agent"
 description = (
@@ -35,13 +38,16 @@ app.add_middleware(
 
 
 os.environ["LANGSMITH_TRACING"] = "true"
-os.environ["LANGSMITH_ENDPOINT"] = os.getenv("LANGSMITH_ENDPOINT")  
-os.environ["LANGSMITH_API_KEY"] = os.getenv("LANGSMITH_API_KEY")
-os.environ["LANGSMITH_PROJECT"] = os.getenv("LANGSMITH_PROJECT")
+os.environ["LANGSMITH_ENDPOINT"] = str(os.getenv("LANGSMITH_ENDPOINT"))  
+os.environ["LANGSMITH_API_KEY"] = str(os.getenv("LANGSMITH_API_KEY"))
+os.environ["LANGSMITH_PROJECT"] = str(os.getenv("LANGSMITH_PROJECT"))
 
 # Pinecone configuration
-PINECONE_API_KEY: str = os.getenv("PINECONE_API_KEY")
-PINECONE_INDEX_NAME: str = 'paperly'
+PINECONE_API_KEY = os.getenv("PINECONE_API_KEY")
+if not PINECONE_API_KEY:
+    raise ValueError("PINECONE_API_KEY environment variable is not set")
+
+PINECONE_INDEX_NAME = 'paperly'
 
 # Initialize Pinecone
 pc = Pinecone(api_key=PINECONE_API_KEY)
