@@ -1,4 +1,3 @@
-from langchain.embeddings import HuggingFaceEmbeddings
 from langchain.schema import Document
 from langchain_experimental.text_splitter import SemanticChunker
 from typing import List, Dict, Any
@@ -7,14 +6,11 @@ import json
 import os
 
 class DocumentChunker:
-    def __init__(self):
+    def __init__(self, embeddings):
         """
         Initialize the DocumentChunker with the embedding model.
         """
-        self.embeddings = HuggingFaceEmbeddings(
-            model_name="sentence-transformers/all-mpnet-base-v2",
-            model_kwargs={"device": "cpu"}
-        )
+        self.embeddings = embeddings
         self.text_splitter = SemanticChunker(
             embeddings=self.embeddings,
             breakpoint_threshold_type="percentile",

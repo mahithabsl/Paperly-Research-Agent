@@ -1,6 +1,6 @@
 from pinecone import Pinecone
 from langchain.embeddings import HuggingFaceEmbeddings
-
+import os
 import re
 from typing import List, Dict, Tuple
 
@@ -10,7 +10,7 @@ class PineconeRetriever:
     Implements semantic search with cross-encoder reranking.
     """
 
-    def __init__(self, index_name: str, k: int = 7):
+    def __init__(self, embeddings, index_name: str, k: int = 7):
         """
         Initialize the Pinecone retriever with enhanced query processing.
         
@@ -25,10 +25,7 @@ class PineconeRetriever:
         self.k = k
 
         # Initialize embeddings model with better configuration
-        self.embeddings = HuggingFaceEmbeddings(
-            model_name="sentence-transformers/all-mpnet-base-v2",
-            model_kwargs={"device": "cpu"}
-        )
+        self.embeddings = embeddings
 
     def is_file_indexed_in_pinecone(self, url: str) -> bool:
         """
