@@ -1,5 +1,7 @@
 # Paperly - AI Research Assistant
 
+https://github.com/user-attachments/assets/2767cae9-61cf-4620-aac4-26e643e98675
+
 This project consists of three main components:
 1. Chrome Browser Extension (UI)
 2. FastAPI Backend
